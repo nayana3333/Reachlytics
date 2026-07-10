@@ -1,0 +1,5 @@
+Alembic migrations for Reachlytics.
+
+Run from the backend directory:
+
+    alembic upgrade head
