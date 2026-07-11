@@ -16,6 +16,7 @@ Users upload a product demo, define a target audience, and run a multi-agent sim
 - Queue: Redis + Celery
 - Simulation: NetworkX-style small-world propagation engine
 - AI layer: OpenRouter, Gemini, Anthropic/OpenAI, and offline mock provider modes
+- ML: Random Forest verdict classifier with SHAP/feature-importance explainability
 - DevOps: Docker Compose
 
 ## Architecture
@@ -54,6 +55,23 @@ Transcript -> Content analysis -> Persona generation -> Graph simulation -> Repo
 - Alembic database migrations
 - Unit tests for scoring and propagation
 - Dockerized services
+- SQL analytics query pack for decision-science style reporting
+- Verdict-space validation across 194,481 metric combinations
+
+## Decision Science Angle
+
+Reachlytics is not only an AI wrapper. It models a business question: "Which audience is most likely to spread this product demo, and why?" The system decomposes that question into measurable parts:
+
+- Content quality: hook, clarity, emotional appeal, shareability, and audience fit
+- Audience behavior: watch, like, comment, share, and skip decisions per persona
+- Network effects: reach, cascade depth, in-target spread, and out-of-target breakout
+- Recommendations: verdict labels, improvement suggestions, and persona-level reasoning
+
+For analytics review, the repo includes:
+
+- `docs/sql_analytics_queries.sql`: PostgreSQL queries for run summaries, verdict distribution, audience comparison, propagation funnels, persona behavior, and AI-source audit
+- `docs/model_evaluation.md`: notes explaining the verdict validation, pre-simulation model, post-simulation explainer, and honest resume framing
+- `backend/scripts/validate_verdict_space.py`: reproducible validation script for the seven-label verdict logic
 
 ## Local Setup
 
@@ -80,9 +98,7 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-Copying `.env.example` to `.env` makes local `uvicorn` use the same PostgreSQL and Redis
-URLs as Docker Compose. If you skip `.env`, the backend falls back to local SQLite for quick
-experiments, and that data will not appear in the Docker/Postgres environment.
+Copying `.env.example` to `.env` makes local `uvicorn` use the same PostgreSQL and Redis URLs as Docker Compose. If you skip `.env`, the backend falls back to local SQLite for quick experiments, and that data will not appear in the Docker/Postgres environment.
 
 When SQLAlchemy models change, create and apply a migration from `backend/`:
 
@@ -91,22 +107,16 @@ alembic revision --autogenerate -m "describe change"
 alembic upgrade head
 ```
 
-Migration note: after pulling any update that adds a file under
-`backend/migrations/versions/`, run `alembic upgrade head` before starting the backend.
-The API performs a startup schema check and will fail loudly if required tables or columns
-are missing, instead of silently running against a stale database.
+Migration note: after pulling any update that adds a file under `backend/migrations/versions/`, run `alembic upgrade head` before starting the backend. The API performs a startup schema check and will fail loudly if required tables or columns are missing, instead of silently running against a stale database.
 
-After pulling updates, always check for new migration files before restarting backend or
-worker processes:
+After pulling updates, always check for new migration files before restarting backend or worker processes:
 
 ```bash
 cd backend
 alembic upgrade head
 ```
 
-If the database is not at the latest Alembic revision, the API refuses to start with a
-clear migration error. This prevents simulations from partially completing against a
-stale schema and producing missing reports, personas, rounds, or graph edges.
+If the database is not at the latest Alembic revision, the API refuses to start with a clear migration error. This prevents simulations from partially completing against a stale schema and producing missing reports, personas, rounds, or graph edges.
 
 For local frontend-only development:
 
@@ -118,9 +128,7 @@ npm run dev
 
 ## Known Issues / Windows Notes
 
-On some Windows setups, especially when this project is inside a OneDrive-synced folder,
-`npm run dev` can fail with a Next.js `spawn EPERM` error. This appears to be a local
-file-watching/process-spawn permission issue rather than an application runtime bug.
+On some Windows setups, especially when this project is inside a OneDrive-synced folder, `npm run dev` can fail with a Next.js `spawn EPERM` error. This appears to be a local file-watching/process-spawn permission issue rather than an application runtime bug.
 
 Working demo workaround:
 
@@ -130,8 +138,7 @@ npm run build
 npm run start
 ```
 
-If possible, run the project from a non-OneDrive folder or exclude the project directory
-from OneDrive sync before a live demo.
+If possible, run the project from a non-OneDrive folder or exclude the project directory from OneDrive sync before a live demo.
 
 ## Environment Variables
 
@@ -152,7 +159,7 @@ Important values:
 
 AI provider modes:
 
-- `AI_PROVIDER=openrouter`: recommended for local demos and testing. OpenRouter is a free-tier-eligible API gateway that routes to multiple underlying models including free options, so no payment method is required to test real AI behavior. Get a free key at https://openrouter.ai/. Set `OPENROUTER_API_KEY` and optionally `OPENROUTER_MODEL` (defaults to a currently available free model).
+- `AI_PROVIDER=openrouter`: recommended for local demos and testing. OpenRouter is a free-tier-eligible API gateway that routes to multiple underlying models including free options, so no payment method is required to test real AI behavior. Get a free key at https://openrouter.ai/. Set `OPENROUTER_API_KEY` and optionally `OPENROUTER_MODEL`.
 - `AI_PROVIDER=gemini`: Google AI Studio path. Set `GEMINI_API_KEY`. `GEMINI_MODEL` defaults to `gemini-2.5-flash-lite`, which is configurable because Google model availability changes over time.
 - `AI_PROVIDER=anthropic`: original paid provider path. Set `ANTHROPIC_API_KEY` for content/personas/reasoning and `OPENAI_API_KEY` for Whisper transcription.
 - `AI_PROVIDER=mock`: fully offline deterministic fallback. No API keys are required, and the UI marks reports as fallback estimates.
@@ -207,11 +214,11 @@ This regenerates `backend/data/training_runs.csv`, `backend/models/verdict_class
 
 ## Resume Bullets
 
-**Reachlytics | FastAPI, Next.js, PostgreSQL, Redis, Celery, NetworkX, LLM APIs** · 2026
+**Reachlytics | FastAPI, Next.js, PostgreSQL, Redis, Celery, NetworkX, SQL, ML, LLM APIs** - 2026
 
-- Built an AI virality prediction platform simulating video spread across 200+ synthetic personas using NetworkX graph propagation and async Redis/Celery job processing with JWT auth
-- Designed persona-level engagement scoring validated across 194,481 input combinations; integrated a Random Forest classifier achieving 78% accuracy with SHAP explainability
-- Integrated LLM APIs for persona generation, transcription, and content analysis with deterministic fallback
+- Built an AI content analytics platform for data-driven content strategy decisions, simulating video spread across 200+ synthetic personas using NetworkX graph propagation and PostgreSQL-backed analytics
+- Designed a SQL-backed analytics schema and validated rule-based verdict logic across 194,481 input combinations; trained a Random Forest verdict classifier achieving 78% accuracy with SHAP-based explainability
+- Integrated LLM APIs for persona generation, content analysis, and transcript-aware reasoning with deterministic fallback for reliable offline demos
 
 ## Future Improvements
 
