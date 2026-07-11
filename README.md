@@ -69,9 +69,30 @@ Reachlytics is not only an AI wrapper. It models a business question: "Which aud
 
 For analytics review, the repo includes:
 
+- `PROJECT_REPORT.md`: short recruiter/interviewer report covering problem statement, architecture, data model, analytics, ML evaluation, and business interpretation
 - `docs/sql_analytics_queries.sql`: PostgreSQL queries for run summaries, verdict distribution, audience comparison, propagation funnels, persona behavior, and AI-source audit
 - `docs/model_evaluation.md`: notes explaining the verdict validation, pre-simulation model, post-simulation explainer, and honest resume framing
 - `backend/scripts/validate_verdict_space.py`: reproducible validation script for the seven-label verdict logic
+
+## Business Use Case
+
+Reachlytics can be used as a pre-campaign decision tool. A product or marketing team can upload a demo video, test it against audience segments such as gamers, creators, students, or startup founders, and compare predicted reach, engagement quality, shareability, and audience fit before investing in paid distribution.
+
+The output is designed to support decisions such as:
+
+- Which audience segment is most promising?
+- Is the video failing because of the hook, clarity, emotional appeal, or shareability?
+- Does the content stay inside the target audience or break out to unrelated viewers?
+- Which persona types are likely to engage, and why?
+
+## Suggested Demo Flow
+
+1. Register or log in.
+2. Upload a short product demo video.
+3. Enter a target audience.
+4. Run the simulation.
+5. Review the metrics, graph spread, agent detail panel, AI-source badge, and final verdict.
+6. Use the SQL query pack or model evaluation notes to explain the analytics layer during interviews.
 
 ## Local Setup
 
