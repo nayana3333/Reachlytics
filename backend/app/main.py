@@ -13,7 +13,7 @@ import app.models  # noqa: F401
 settings = get_settings()
 configure_logging()
 
-is_memory_sqlite = settings.database_url == "sqlite:///:memory:"
+is_memory_sqlite = settings.normalized_database_url == "sqlite:///:memory:"
 
 if is_memory_sqlite:
     Base.metadata.create_all(bind=engine)
@@ -31,7 +31,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=settings.cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
