@@ -114,9 +114,15 @@ Use the same backend environment variables, especially `DATABASE_URL` and `REDIS
 Create a Vercel project from the GitHub repo:
 
 - Root directory: `frontend`
+- Install command: `npm install`
 - Build command: `npm run build`
 - Output: Next.js default
 - Environment variable: `NEXT_PUBLIC_API_URL=<backend-url>`
+
+Do not set Vercel root directory to `backend`. If the logs mention
+`/vercel/path0/backend/package.json` or `/vercel/path0/backend/frontend/package.json`,
+the Vercel project is pointed at the wrong folder. Set root directory to `frontend`
+and use the normal install/build commands above.
 
 After the frontend URL is created, add it to backend `FRONTEND_ORIGINS`.
 
