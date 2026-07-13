@@ -13,8 +13,9 @@ The cleanest beginner-friendly production setup is:
 - Frontend: Vercel
 - Backend: Render web service
 - Database: Render PostgreSQL or any managed PostgreSQL provider
-- Redis: Upstash Redis or any managed Redis provider
-- Worker: Render background worker
+- Queue: inline mode for the first public demo
+
+Why inline mode first? The current app stores uploaded videos on the backend filesystem. On many cloud hosts, a separate worker service does not automatically share those uploaded files with the web service. Inline mode keeps the upload and simulation in one service, which is more reliable for a first live demo. Redis/Celery can be re-enabled later after moving uploads to shared object storage.
 
 ## Required Environment Variables
 
@@ -24,7 +25,7 @@ Backend:
 APP_NAME=Reachlytics API
 ENVIRONMENT=production
 DATABASE_URL=<managed-postgres-url>
-REDIS_URL=<managed-redis-url>
+REDIS_URL=
 JWT_SECRET_KEY=<strong-random-secret>
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
@@ -55,7 +56,29 @@ docker build --build-arg NEXT_PUBLIC_API_URL=https://your-backend-domain.onrende
 
 Use `AI_PROVIDER=mock` for a stable free demo. Switch to `openrouter`, `gemini`, or `anthropic` only after adding the matching API key.
 
-## Backend Deployment
+## Backend Deployment With Render Blueprint
+
+This repo includes `render.yaml`, so Render can create the backend and PostgreSQL database from the repository.
+
+Steps:
+
+1. Open Render Dashboard.
+2. Choose `New`.
+3. Choose `Blueprint`.
+4. Select `nayana3333/Reachlytics`.
+5. Confirm the generated services.
+6. Deploy.
+7. Copy the backend URL after deployment.
+
+After Vercel creates the frontend URL, update the Render backend environment variable:
+
+```text
+FRONTEND_ORIGINS=https://your-frontend-domain.vercel.app
+```
+
+Then redeploy the backend.
+
+## Backend Deployment Manually
 
 Create a Docker-based web service from the GitHub repo:
 
@@ -72,7 +95,9 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ## Worker Deployment
 
-Create a background worker from the same backend image:
+For the first hosted demo, skip the worker and Redis so the app runs in inline mode. Add a worker later only after uploads are stored in shared object storage such as S3, Cloudinary, or Render disk storage that both services can access.
+
+When shared storage is available, create a background worker from the same backend image:
 
 - Root directory: `backend`
 - Dockerfile path: `backend/Dockerfile`
@@ -99,7 +124,8 @@ After the frontend URL is created, add it to backend `FRONTEND_ORIGINS`.
 
 - Do not commit `.env` files or API keys.
 - Keep generated model artifacts out of Git; regenerate them locally if needed.
-- If Redis is unavailable, the app can run simulations inline, but production should use Redis + Celery.
+- This first deployment intentionally runs simulations inline for reliability with uploaded video files.
+- Production Redis + Celery should be paired with shared video storage.
 - For demos, use small persona counts first to avoid long AI/provider calls.
 - For uploaded videos, persistent file storage is recommended if the host has ephemeral disks.
 
