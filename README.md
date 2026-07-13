@@ -247,15 +247,6 @@ Redis/Celery production mode should be paired with shared object storage for upl
     \resumeItemListEnd
 ```
 
-## Interview Talking Points
-
-- Why graph simulation is useful for modeling content spread
-- How persona-level scoring converts qualitative audience behavior into measurable decisions
-- Why SQL analytics are useful for comparing target audiences and simulation outcomes
-- How the verdict validation script prevents silent rule gaps
-- Why the post-simulation ML model is treated as an explainer, not a predictive claim
-- How the system can scale with shared storage, Redis/Celery, and managed deployment
-
 ## Future Improvements
 
 - WebSocket progress updates
