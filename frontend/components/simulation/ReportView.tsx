@@ -1,13 +1,4 @@
-import { AiSource } from "@/lib/types";
-
-type Report = {
-  summary: string;
-  improvement_suggestions: string[];
-  best_audience_segments: string[];
-  risk_factors: string[];
-  ml_verdict_prediction: string | null;
-  visual_description: string | null;
-} | null;
+import { AiSource, Report } from "@/lib/types";
 
 type AiSourceBreakdown = {
   transcript: AiSource;

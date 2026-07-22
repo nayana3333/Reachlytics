@@ -8,7 +8,6 @@ __pycache__/
 .audit-tmp/
 *.pyc
 *.tmp
-viralyst.db
 *.db
 *.db-journal
 uploads/

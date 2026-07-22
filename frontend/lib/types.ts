@@ -80,3 +80,22 @@ export type PersonaDetail = {
   reason: string;
   round: number | null;
 };
+
+export type Round = {
+  id: string;
+  round_number: number;
+  active_agents: number;
+  new_reach: number;
+  likes: number;
+  comments: number;
+  shares: number;
+};
+
+export type Report = {
+  summary: string;
+  improvement_suggestions: string[];
+  best_audience_segments: string[];
+  risk_factors: string[];
+  ml_verdict_prediction: string | null;
+  visual_description: string | null;
+} | null;

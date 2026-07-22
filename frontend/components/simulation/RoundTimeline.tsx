@@ -1,12 +1,4 @@
-type Round = {
-  id: string;
-  round_number: number;
-  active_agents: number;
-  new_reach: number;
-  likes: number;
-  comments: number;
-  shares: number;
-};
+import { Round } from "@/lib/types";
 
 export function RoundTimeline({ rounds }: { rounds: Round[] }) {
   return (

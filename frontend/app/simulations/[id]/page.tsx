@@ -11,26 +11,7 @@ import { ReportView } from "@/components/simulation/ReportView";
 import { RoundTimeline } from "@/components/simulation/RoundTimeline";
 import { Button } from "@/components/ui/Button";
 import { apiFetch } from "@/lib/api";
-import { GraphEdge, GraphNode, PersonaDetail, Simulation } from "@/lib/types";
-
-type Round = {
-  id: string;
-  round_number: number;
-  active_agents: number;
-  new_reach: number;
-  likes: number;
-  comments: number;
-  shares: number;
-};
-
-type Report = {
-  summary: string;
-  improvement_suggestions: string[];
-  best_audience_segments: string[];
-  risk_factors: string[];
-  ml_verdict_prediction: string | null;
-  visual_description: string | null;
-} | null;
+import { GraphEdge, GraphNode, PersonaDetail, Report, Round, Simulation } from "@/lib/types";
 
 const stageMessages: Record<string, string> = {
   queued: "Waiting to start...",
