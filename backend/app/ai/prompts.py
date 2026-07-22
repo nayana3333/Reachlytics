@@ -71,34 +71,3 @@ JSON shape:
   }}
 ]
 """
-
-AGENT_REASON_PROMPT = """You are simulating one social media persona reacting to a product demo.
-Use the persona details and the action that the scoring engine already decided.
-
-Return strict JSON only:
-{{
-  "reason": "2-3 sentence explanation in this persona's voice explaining why they took the action"
-}}
-
-Persona:
-{persona}
-
-Transcript:
-{transcript}
-
-Content analysis:
-{content_analysis}
-
-Target audience:
-{target_audience}
-
-Decided action:
-{action}
-"""
-
-FINAL_REPORT_PROMPT = """Write an explainable virality report using these metrics:
-{metrics}
-
-Content analysis:
-{content_analysis}
-"""
