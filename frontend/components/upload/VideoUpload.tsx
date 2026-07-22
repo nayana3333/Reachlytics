@@ -11,6 +11,7 @@ export function VideoUpload() {
   const router = useRouter();
   const [stage, setStage] = useState("Ready");
   const [error, setError] = useState("");
+  const isSubmitting = stage !== "Ready";
 
   async function submit(formData: FormData) {
     setError("");
@@ -43,15 +44,15 @@ export function VideoUpload() {
       <div className="grid gap-5 md:grid-cols-[1fr_1fr]">
         <label className="text-sm font-medium">
           Video
-          <Input className="mt-2 pt-2" name="video" required type="file" accept="video/*" />
+          <Input className="mt-2 pt-2" name="video" required type="file" accept="video/*" disabled={isSubmitting} />
         </label>
         <label className="text-sm font-medium">
           Target audience
-          <Input className="mt-2" name="target_audience" required placeholder="Solo founders and small teams running tech businesses" />
+          <Input className="mt-2" name="target_audience" required placeholder="Solo founders and small teams running tech businesses" disabled={isSubmitting} />
         </label>
         <label className="text-sm font-medium">
           Population
-          <select className="mt-2 h-10 w-full rounded-md border border-line bg-white px-3 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/10" name="persona_count" defaultValue="100">
+          <select className="mt-2 h-10 w-full rounded-md border border-line bg-white px-3 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/10" name="persona_count" defaultValue="100" disabled={isSubmitting}>
             <option value="50">50 agents</option>
             <option value="100">100 agents</option>
             <option value="200">200 agents</option>
@@ -60,7 +61,7 @@ export function VideoUpload() {
         </label>
         <label className="text-sm font-medium">
           Rounds
-          <select className="mt-2 h-10 w-full rounded-md border border-line bg-white px-3 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/10" name="round_count" defaultValue="5">
+          <select className="mt-2 h-10 w-full rounded-md border border-line bg-white px-3 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/10" name="round_count" defaultValue="5" disabled={isSubmitting}>
             <option value="3">3 rounds</option>
             <option value="5">5 rounds</option>
             <option value="8">8 rounds</option>
@@ -70,7 +71,7 @@ export function VideoUpload() {
       </div>
       <div className="mt-6 flex items-center justify-between border-t border-line pt-5">
         <p className="text-sm text-muted">{stage}</p>
-        <Button>Run report</Button>
+        <Button loading={isSubmitting}>{isSubmitting ? "Running..." : "Run report"}</Button>
       </div>
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
     </form>

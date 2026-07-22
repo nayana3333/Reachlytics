@@ -179,7 +179,7 @@ export function GraphView({
         <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
           <div>
             <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-muted">02 Spread</p>
-            <p className="mt-1 text-xs text-muted">Round {Math.min(currentRound, maxRound)} of {maxRound || 0}. Teal=in-target, amber=outside-target, grey=skipped or not shown.</p>
+            <p className="mt-1 text-xs text-muted">Round {Math.min(currentRound, maxRound)} of {maxRound || 0}. Blue=in-target, orange=outside-target, grey=skipped or not shown.</p>
           </div>
           <Button
             variant="secondary"

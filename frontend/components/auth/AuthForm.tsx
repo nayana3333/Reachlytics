@@ -49,9 +49,16 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       <Input className="mt-4" name="email" placeholder="Email" required type="email" />
       <Input className="mt-4" name="password" placeholder="Password" required type="password" minLength={8} />
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-      <Button className="mt-6 w-full" disabled={loading}>
+      <Button className="mt-6 w-full" disabled={loading} loading={loading}>
         {loading ? "Working..." : mode === "login" ? "Login" : "Create account"}
       </Button>
+      <p className="mt-5 text-center text-sm text-muted">
+        {mode === "login" ? (
+          <>New here? <a className="font-semibold text-accent hover:underline" href="/register">Create an account</a></>
+        ) : (
+          <>Already have an account? <a className="font-semibold text-accent hover:underline" href="/login">Login</a></>
+        )}
+      </p>
     </form>
   );
 }
