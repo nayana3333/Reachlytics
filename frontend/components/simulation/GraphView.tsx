@@ -122,10 +122,12 @@ export function GraphView({
     setSelectedId(nodeId);
   }, []);
 
-  useEffect(() => {
+  const [prevNodeKey, setPrevNodeKey] = useState(nodeKey);
+  if (nodeKey !== prevNodeKey) {
+    setPrevNodeKey(nodeKey);
     setCurrentRound(0);
     setSelectedId(null);
-  }, [nodeKey]);
+  }
 
   useEffect(() => {
     if (!maxRound || currentRound >= maxRound) return;

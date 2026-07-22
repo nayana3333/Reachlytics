@@ -19,6 +19,8 @@ coverage/
 postgres_data/
 pytest-cache-files-*/
 *.log
+*.tsbuildinfo
+.claude/
 
 # Generated ML artifacts; regenerate with backend/scripts when needed.
 backend/models/*.joblib

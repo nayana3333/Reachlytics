@@ -9,6 +9,11 @@ export function setToken(token: string) {
   localStorage.setItem("reachlytics_token", token);
 }
 
+export function clearToken() {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem("reachlytics_token");
+}
+
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
   const headers = new Headers(options.headers);

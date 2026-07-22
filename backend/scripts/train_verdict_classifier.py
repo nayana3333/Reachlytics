@@ -6,6 +6,9 @@ import csv
 from pathlib import Path
 import sys
 
+import matplotlib
+matplotlib.use("Agg")  # headless-safe backend; this script never renders a window
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT))
 

@@ -32,7 +32,7 @@ services:
       - key: ALLOWED_VIDEO_EXTENSIONS
         value: .mp4,.mov,.webm,.mkv
       - key: FRONTEND_ORIGINS
-        value: https://replace-after-vercel-deploy.vercel.app
+        value: https://reachlytics.vercel.app
       - key: AI_PROVIDER
         value: mock
       - key: OPENROUTER_MODEL

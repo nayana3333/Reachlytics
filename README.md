@@ -44,7 +44,7 @@ The platform combines video upload, content analysis, synthetic persona generati
 - **Graph simulation:** NetworkX-style propagation engine models multi-round social spread.
 - **Persona-level reasoning:** Each reached agent has watch/like/comment/share decisions and an explanation.
 - **SQL analytics:** Query pack for funnels, audience comparison, verdict distribution, and AI-source auditing.
-- **ML evaluation:** Random Forest verdict classifier with documented 78.3% accuracy and explainability support.
+- **ML evaluation:** Random Forest verdict classifier with documented 74.2% accuracy and explainability support ([full report + confusion matrix](docs/model_evaluation.md)).
 - **Validation:** Rule-based verdict engine tested across **194,481 metric combinations** with no gaps.
 - **AI transparency:** Every stage is tagged as real AI or deterministic fallback, avoiding misleading output.
 - **Deployment-ready:** Vercel frontend config, Render backend blueprint, Docker Compose local stack.
@@ -137,7 +137,7 @@ The project includes analytics artifacts for decision-science style review:
 
 - [SQL analytics pack](docs/sql_analytics_queries.sql): report summaries, audience comparison, funnels, persona behavior, AI-source audit.
 - [Model evaluation notes](docs/model_evaluation.md): classifier framing, class balance, and explanation of predictive vs circular models.
-- Pre-simulation Random Forest classifier: documented **78.3% accuracy** on a balanced simulator-generated dataset.
+- Pre-simulation Random Forest classifier: documented **74.2% accuracy** (macro F1 0.69) on a balanced, simulator-generated dataset — see [docs/model_evaluation.md](docs/model_evaluation.md) for the full per-class breakdown and confusion matrix.
 - Post-simulation classifier is documented as an explainer/sanity check, not overclaimed as a predictive achievement.
 
 ## AI Provider Strategy
@@ -243,7 +243,7 @@ Redis/Celery production mode should be paired with shared object storage for upl
     \resumeItemListStart
       \resumeItem{Built an AI content analytics platform to support \textbf{data-driven content strategy decisions}, simulating product video spread across \textbf{200+ synthetic personas} using \textbf{NetworkX} graph propagation and PostgreSQL-backed analytics}
       \resumeItem{Designed \textbf{SQL}-based analytics workflows for audience comparison, engagement funnels, verdict distribution, and AI-source auditing; validated rule-based verdict logic across \textbf{194,481 metric combinations}}
-      \resumeItem{Trained a \textbf{Random Forest} verdict classifier with \textbf{78\% accuracy} and explainability support, while integrating LLM-based persona generation, content analysis, and deterministic fallback for reliable demos}
+      \resumeItem{Trained a \textbf{Random Forest} verdict classifier with \textbf{74\% accuracy} and explainability support, while integrating LLM-based persona generation, content analysis, and deterministic fallback for reliable demos}
     \resumeItemListEnd
 ```
 

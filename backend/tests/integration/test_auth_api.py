@@ -1,12 +1,8 @@
-import os
 import uuid
 
-os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-os.environ["ANTHROPIC_API_KEY"] = ""
+from fastapi.testclient import TestClient
 
-from fastapi.testclient import TestClient  # noqa: E402
-
-from app.main import app  # noqa: E402
+from app.main import app
 
 
 client = TestClient(app)

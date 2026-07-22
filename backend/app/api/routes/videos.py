@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
@@ -28,7 +28,10 @@ def list_videos(db: Session = Depends(get_db), current_user: User = Depends(get_
 
 @router.get("/{video_id}", response_model=VideoResponse)
 def get_video(video_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    return db.query(Video).filter(Video.id == video_id, Video.user_id == current_user.id).one()
+    video = db.query(Video).filter(Video.id == video_id, Video.user_id == current_user.id).one_or_none()
+    if video is None:
+        raise HTTPException(status_code=404, detail="Video not found")
+    return video
 
 
 @router.get("/{video_id}/transcript", response_model=TranscriptResponse)
@@ -37,6 +40,8 @@ def get_transcript(video_id: str, db: Session = Depends(get_db), current_user: U
         db.query(Transcript)
         .join(Video)
         .filter(Transcript.video_id == video_id, Video.user_id == current_user.id)
-        .one()
+        .one_or_none()
     )
+    if transcript is None:
+        raise HTTPException(status_code=404, detail="Transcript not found")
     return transcript

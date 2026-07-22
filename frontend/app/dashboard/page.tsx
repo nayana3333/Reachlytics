@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AuthGuard } from "@/components/auth/AuthGuard";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 import { Button } from "@/components/ui/Button";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { SimulationTable } from "@/components/dashboard/SimulationTable";
@@ -34,24 +36,29 @@ export default function DashboardPage() {
     : 0;
 
   return (
-    <main className="min-h-screen px-6 py-6">
-      <header className="mx-auto flex max-w-6xl items-center justify-between border-b border-line pb-4">
-        <Link href="/" className="font-extrabold tracking-tight">Reachlytics</Link>
-        <Link href="/upload"><Button>New report</Button></Link>
-      </header>
-      <section className="mx-auto max-w-6xl py-8">
-        <h1 className="text-3xl font-extrabold tracking-tight">Simulation dashboard</h1>
-        <p className="mt-2 text-muted">Track virality reports, spread behavior, and explainable outcomes.</p>
-        <div className="mt-6 grid gap-4 md:grid-cols-4">
-          <MetricCard label="Reports" value={String(simulations.length)} />
-          <MetricCard label="Completed" value={String(completed.length)} />
-          <MetricCard label="Average score" value={String(avgScore)} />
-          <MetricCard label="Queue model" value={queueLabel} />
-        </div>
-        <div className="mt-8">
-          <SimulationTable simulations={simulations} />
-        </div>
-      </section>
-    </main>
+    <AuthGuard>
+      <main className="min-h-screen px-6 py-6">
+        <header className="mx-auto flex max-w-6xl items-center justify-between border-b border-line pb-4">
+          <Link href="/" className="font-extrabold tracking-tight">Reachlytics</Link>
+          <div className="flex items-center gap-2">
+            <Link href="/upload"><Button>New report</Button></Link>
+            <LogoutButton />
+          </div>
+        </header>
+        <section className="mx-auto max-w-6xl py-8">
+          <h1 className="text-3xl font-extrabold tracking-tight">Simulation dashboard</h1>
+          <p className="mt-2 text-muted">Track virality reports, spread behavior, and explainable outcomes.</p>
+          <div className="mt-6 grid gap-4 md:grid-cols-4">
+            <MetricCard label="Reports" value={String(simulations.length)} />
+            <MetricCard label="Completed" value={String(completed.length)} />
+            <MetricCard label="Average score" value={String(avgScore)} />
+            <MetricCard label="Queue model" value={queueLabel} />
+          </div>
+          <div className="mt-8">
+            <SimulationTable simulations={simulations} />
+          </div>
+        </section>
+      </main>
+    </AuthGuard>
   );
 }

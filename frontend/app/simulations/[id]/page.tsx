@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
+import { AuthGuard } from "@/components/auth/AuthGuard";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 import { GraphView } from "@/components/simulation/GraphView";
 import { MetricsPanel } from "@/components/simulation/MetricsPanel";
 import { ReportView } from "@/components/simulation/ReportView";
@@ -168,10 +170,14 @@ export default function SimulationPage() {
   }, [id]);
 
   return (
+    <AuthGuard>
     <main className="min-h-screen px-6 py-6">
       <header className="mx-auto flex max-w-7xl items-center justify-between border-b border-line pb-4">
         <Link href="/dashboard" className="font-extrabold tracking-tight">Reachlytics</Link>
-        <Link href="/upload"><Button>New report</Button></Link>
+        <div className="flex items-center gap-2">
+          <Link href="/upload"><Button>New report</Button></Link>
+          <LogoutButton />
+        </div>
       </header>
       <section className="mx-auto max-w-7xl py-8">
         <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-muted">Run report</p>
@@ -210,5 +216,6 @@ export default function SimulationPage() {
         </div>
       </section>
     </main>
+    </AuthGuard>
   );
 }
